@@ -39,11 +39,24 @@ benign_patient_data = {
         15.11, 19.26, 99.7, 711.2, 0.144, 0.1773, 0.239, 0.1288, 0.2977, 0.07259
     ]
 }
+import requests
+import json
 
-url = "http://127.0.0.1:5002/predict"
+# Your exact Render URL with the '/predict' route added
+url = "https://breast-cancer-detection-skag.onrender.com/predict"
+
+# Sample Benign data
+benign_patient_data = {
+    "features": [
+        13.54, 14.36, 87.46, 566.3, 0.09779, 0.08129, 0.06664, 0.04781, 0.1885, 0.05766,
+        0.2699, 0.7886, 2.058, 23.56, 0.008462, 0.0146, 0.02387, 0.01315, 0.0198, 0.0023,
+        15.11, 19.26, 99.7, 711.2, 0.144, 0.1773, 0.239, 0.1288, 0.2977, 0.07259
+    ]
+}
 
 try:
-    print("Sending Benign sample request to local API...")
+    print(f"Connecting to Render at: {url}")
+    # Note: On the free tier, this might take 30 seconds to "wake up"
     response = requests.post(url, json=benign_patient_data)
     
     if response.status_code == 200:
@@ -56,7 +69,7 @@ try:
         print(f"CLASS ID:   {result['class_id']}")
         print("="*30)
     else:
-        print(f"API Error: {response.text}")
+        print(f"API Error ({response.status_code}): {response.text}")
 
 except Exception as e:
     print(f"Connection failed: {e}")
